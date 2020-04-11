@@ -209,15 +209,10 @@ class Field implements Expressionable
     /**
      * Constructor. You can pass field properties as array.
      *
-     * @param array $defaults
-     *
      * @throws Exception
      */
-    public function __construct($defaults = [])
+    public function __construct(array $defaults = [])
     {
-        if (!is_array($defaults)) {
-            throw new Exception(['Field requires array for defaults', 'arg' => $defaults]);
-        }
         foreach ($defaults as $key => $val) {
             if (is_array($val)) {
                 $this->$key = array_merge(isset($this->$key) && is_array($this->$key) ? $this->$key : [], $val);
@@ -528,14 +523,10 @@ class Field implements Expressionable
     /**
      * When field is used as expression, this method will be called.
      * Universal way to convert ourselves to expression. Off-load implementation into persistence.
-     *
-     * @param Expression $expression
-     *
-     * @return Expression
      */
-    public function getDSQLExpression($expression)
+    public function getDSQLExpression(Expression $expression): Expression
     {
-        if (!$this->owner->persistence || !$this->owner->persistence instanceof Persistence\SQL) {
+        if ($this->owner->persistence instanceof Persistence\SQL) {
             throw new Exception([
                 'Field must have SQL persistence if it is used as part of expression',
                 'persistence'=> $this->owner->persistence ?? null,

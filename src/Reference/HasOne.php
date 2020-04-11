@@ -192,8 +192,6 @@ class HasOne extends Reference
      * Returns our field or id field.
      *
      * @throws Exception
-     *
-     * @return Field
      */
     protected function referenceOurValue(): Field
     {
@@ -208,14 +206,10 @@ class HasOne extends Reference
      * If owner model is not loaded, then return referenced model with condition set.
      * This can happen in case of deep traversal $m->ref('Many')->ref('one_id'), for example.
      *
-     * @param array $defaults Properties
-     *
      * @throws Exception
      * @throws \atk4\data\Exception
-     *
-     * @return Model
      */
-    public function ref($defaults = []): Model
+    public function ref(array $defaults = []): Model
     {
         $m = $this->getModel($defaults);
 

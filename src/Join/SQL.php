@@ -4,6 +4,8 @@ namespace atk4\data\Join;
 
 use atk4\data\Join;
 use atk4\data\Model;
+use atk4\dsql\Expression;
+use atk4\dsql\Query;
 
 /**
  * Join\SQL class.
@@ -17,14 +19,12 @@ class SQL extends Join implements \atk4\dsql\Expressionable
      * By default we create ON expression ourselves, but if you want to specify
      * it, use the 'on' property.
      *
-     * @var \atk4\dsql\Expression
+     * @var Expression
      */
     protected $on = null;
 
     /**
      * Will use either foreign_alias or create #join_<table>.
-     *
-     * @return string
      */
     public function getDesiredName(): string
     {
@@ -33,12 +33,8 @@ class SQL extends Join implements \atk4\dsql\Expressionable
 
     /**
      * Returns DSQL Expression.
-     *
-     * @param \atk4\dsql\Expression $q
-     *
-     * @return \atk4\dsql\Expression
      */
-    public function getDSQLExpression($q)
+    public function getDSQLExpression(Expression $q): Expression
     {
         /*
         // If our Model has expr() method (inherited from Persistence\SQL) then use it
@@ -109,10 +105,8 @@ class SQL extends Join implements \atk4\dsql\Expressionable
 
     /**
      * Returns DSQL query.
-     *
-     * @return \atk4\dsql\Query
      */
-    public function dsql()
+    public function dsql(): Query
     {
         $dsql = $this->owner->persistence->initQuery($this->owner);
         $dsql->reset('table');
@@ -123,11 +117,8 @@ class SQL extends Join implements \atk4\dsql\Expressionable
 
     /**
      * Before query is executed, this method will be called.
-     *
-     * @param Model            $model
-     * @param \atk4\dsql\Query $query
      */
-    public function initSelectQuery($model, $query)
+    public function initSelectQuery(Model $model, Query $query): void
     {
         // if ON is set, we don't have to worry about anything
         if ($this->on) {
@@ -167,10 +158,8 @@ class SQL extends Join implements \atk4\dsql\Expressionable
 
     /**
      * Called from afterLoad hook.
-     *
-     * @param Model $model
      */
-    public function afterLoad($model)
+    public function afterLoad(Model $model)
     {
         // we need to collect ID
         if (isset($model->data[$this->short_name])) {
@@ -181,11 +170,8 @@ class SQL extends Join implements \atk4\dsql\Expressionable
 
     /**
      * Called from beforeInsert hook.
-     *
-     * @param Model $model
-     * @param array $data
      */
-    public function beforeInsert($model, &$data)
+    public function beforeInsert(Model $model, array &$data)
     {
         if ($this->weak) {
             return;
@@ -214,10 +200,9 @@ class SQL extends Join implements \atk4\dsql\Expressionable
     /**
      * Called from afterInsert hook.
      *
-     * @param Model $model
      * @param mixed $id
      */
-    public function afterInsert($model, $id)
+    public function afterInsert(Model $model, $id)
     {
         if ($this->weak) {
             return;
@@ -237,11 +222,8 @@ class SQL extends Join implements \atk4\dsql\Expressionable
 
     /**
      * Called from beforeUpdate hook.
-     *
-     * @param Model $model
-     * @param array $data
      */
-    public function beforeUpdate($model, &$data)
+    public function beforeUpdate(Model $model, array &$data)
     {
         if ($this->weak) {
             return;
@@ -267,10 +249,9 @@ class SQL extends Join implements \atk4\dsql\Expressionable
     /**
      * Called from beforeDelete and afterDelete hooks.
      *
-     * @param Model $model
      * @param mixed $id
      */
-    public function doDelete($model, $id)
+    public function doDelete(Model $model, $id)
     {
         if ($this->weak) {
             return;

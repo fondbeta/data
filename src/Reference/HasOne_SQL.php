@@ -23,8 +23,6 @@ class HasOne_SQL extends HasOne
      *
      * @throws Exception
      * @throws \atk4\core\Exception
-     *
-     * @return Field_SQL_Expression
      */
     public function addField($field, ?string $their_field = null): Field_SQL_Expression
     {
@@ -91,15 +89,12 @@ class HasOne_SQL extends HasOne
      *
      * addFields(['from', 'to'], ['type' => 'date']);
      *
-     * @param array $fields
-     * @param array $defaults
-     *
      * @throws Exception
      * @throws \atk4\core\Exception
      *
      * @return $this
      */
-    public function addFields($fields = [], $defaults = [])
+    public function addFields(array $fields = [], array $defaults = []): self
     {
         foreach ($fields as $field => $alias) {
             if (is_array($alias)) {
@@ -130,13 +125,9 @@ class HasOne_SQL extends HasOne
     /**
      * Creates model that can be used for generating sub-query actions.
      *
-     * @param array $defaults Properties
-     *
      * @throws \atk4\core\Exception
-     *
-     * @return Model
      */
-    public function refLink($defaults = []): Model
+    public function refLink(array $defaults = []): Model
     {
         $m = $this->getModel($defaults);
 
@@ -151,14 +142,10 @@ class HasOne_SQL extends HasOne
     /**
      * Navigate to referenced model.
      *
-     * @param array $defaults Properties
-     *
      * @throws Exception
      * @throws \atk4\core\Exception
-     *
-     * @return Model
      */
-    public function ref($defaults = []): Model
+    public function ref(array $defaults = []): Model
     {
         $m = parent::ref($defaults);
 
@@ -197,14 +184,10 @@ class HasOne_SQL extends HasOne
      *
      * This method returns newly created expression field.
      *
-     * @param array $defaults Properties
-     *
      * @throws Exception
      * @throws \atk4\core\Exception
-     *
-     * @return Field_SQL_Expression
      */
-    public function addTitle($defaults = []): Field_SQL_Expression
+    public function addTitle(array $defaults = []): Field_SQL_Expression
     {
         if (!is_array($defaults)) {
             throw new Exception([
@@ -271,14 +254,12 @@ class HasOne_SQL extends HasOne
      *
      * This will add expression 'user' equal to ref('user_id')['name'];
      *
-     * @param array $defaults Properties
-     *
      * @throws Exception
      * @throws \atk4\core\Exception
      *
      * @return $this
      */
-    public function withTitle($defaults = [])
+    public function withTitle(array $defaults = []): self
     {
         $this->addTitle($defaults);
 

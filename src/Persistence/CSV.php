@@ -86,11 +86,8 @@ class CSV extends Persistence
 
     /**
      * Constructor. Can pass array of data in parameters.
-     *
-     * @param array &$data
-     * @param array $defaults
      */
-    public function __construct($file, $defaults = [])
+    public function __construct(string $file, array $defaults = [])
     {
         $this->file = $file;
         $this->setDefaults($defaults);
@@ -112,7 +109,7 @@ class CSV extends Persistence
      *
      * @param string $mode 'r' or 'w'
      */
-    public function openFile($mode = 'r')
+    public function openFile(string $mode = 'r'): void
     {
         if (!$this->handle) {
             $this->handle = fopen($this->file, $mode);
@@ -125,7 +122,7 @@ class CSV extends Persistence
     /**
      * Close CSV file.
      */
-    public function closeFile()
+    public function closeFile(): void
     {
         if ($this->handle) {
             fclose($this->handle);
@@ -135,10 +132,8 @@ class CSV extends Persistence
 
     /**
      * Returns one line of CSV file as array.
-     *
-     * @return array
      */
-    public function getLine()
+    public function getLine(): array
     {
         $data = fgetcsv($this->handle, 0, $this->delimiter, $this->enclosure, $this->escape_char);
         if ($data) {
@@ -150,10 +145,8 @@ class CSV extends Persistence
 
     /**
      * Writes array as one record to CSV file.
-     *
-     * @param array
      */
-    public function putLine($data)
+    public function putLine(array $data): void
     {
         $ok = fputcsv($this->handle, $data, $this->delimiter, $this->enclosure, $this->escape_char);
         if ($ok === false) {
@@ -165,7 +158,7 @@ class CSV extends Persistence
      * When load operation starts, this will open file and read
      * the first line. This line is then used to identify columns.
      */
-    public function loadHeader()
+    public function loadHeader(): void
     {
         $this->openFile('r');
 
@@ -178,10 +171,8 @@ class CSV extends Persistence
     /**
      * When load operation starts, this will open file and read
      * the first line. This line is then used to identify columns.
-     *
-     * @param Model $m
      */
-    public function saveHeader(Model $m)
+    public function saveHeader(Model $m): void
     {
         $this->openFile('w');
 
@@ -202,10 +193,8 @@ class CSV extends Persistence
     /**
      * Remembers $this->header so that the data can be
      * easier mapped.
-     *
-     * @param array
      */
-    public function initializeHeader($header)
+    public function initializeHeader(array $header): void
     {
         // removes forbidden symbols from header (field names)
         $this->header = array_map(function ($name) {
@@ -215,13 +204,8 @@ class CSV extends Persistence
 
     /**
      * Typecasting when load data row.
-     *
-     * @param Model $m
-     * @param array $row
-     *
-     * @return array
      */
-    public function typecastLoadRow(Model $m, $row)
+    public function typecastLoadRow(Model $m, array $row): array
     {
         $id = null;
         if (isset($row[$m->id_field])) {
@@ -253,8 +237,6 @@ class CSV extends Persistence
      * Tries to load model and return data record.
      * Doesn't throw exception if model can't be loaded.
      *
-     * @param Model $m
-     *
      * @return array|null
      */
     public function tryLoadAny(Model $m)
@@ -282,12 +264,8 @@ class CSV extends Persistence
 
     /**
      * Prepare iterator.
-     *
-     * @param Model $m
-     *
-     * @return array
      */
-    public function prepareIterator(Model $m)
+    public function prepareIterator(Model $m): array
     {
         if (!$this->mode) {
             $this->mode = 'r';
@@ -313,12 +291,8 @@ class CSV extends Persistence
 
     /**
      * Loads any one record.
-     *
-     * @param Model $m
-     *
-     * @return array
      */
-    public function loadAny(Model $m)
+    public function loadAny(Model $m): array
     {
         $data = $this->tryLoadAny($m);
 
@@ -335,13 +309,9 @@ class CSV extends Persistence
     /**
      * Inserts record in data array and returns new record ID.
      *
-     * @param Model  $m
-     * @param array  $data
-     * @param string $table
-     *
      * @return mixed
      */
-    public function insert(Model $m, $data)
+    public function insert(Model $m, array $data)
     {
         if (!$this->mode) {
             $this->mode = 'w';
@@ -365,24 +335,17 @@ class CSV extends Persistence
     /**
      * Updates record in data array and returns record ID.
      *
-     * @param Model  $m
-     * @param mixed  $id
-     * @param array  $data
-     * @param string $table
+     * @param mixed $id
      */
-    public function update(Model $m, $id, $data, $table = null)
+    public function update(Model $m, $id, array $data)
     {
         throw new Exception(['Updating records is not supported in CSV persistence.']);
     }
 
     /**
      * Deletes record in data array.
-     *
-     * @param Model  $m
-     * @param mixed  $id
-     * @param string $table
      */
-    public function delete(Model $m, $id, $table = null)
+    public function delete(Model $m, $id)
     {
         throw new Exception(['Deleting records is not supported in CSV persistence.']);
     }
@@ -390,12 +353,9 @@ class CSV extends Persistence
     /**
      * Generates new record ID.
      *
-     * @param Model  $m
-     * @param string $table
-     *
-     * @return string
+     * @return mixed
      */
-    public function generateNewID($m, $table = null)
+    public function generateNewID(Model $m, string $table = null)
     {
         if (!isset($table)) {
             $table = $m->table;
@@ -420,13 +380,8 @@ class CSV extends Persistence
 
     /**
      * Export all DataSet.
-     *
-     * @param Model      $m
-     * @param array|null $fields
-     *
-     * @return array
      */
-    public function export(Model $m, $fields = null)
+    public function export(Model $m, array $fields = null): array
     {
         $data = [];
 

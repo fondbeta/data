@@ -78,8 +78,6 @@ class Generic
     /**
      * Attempt to execute callback of the action.
      *
-     * @param mixed ...$args
-     *
      * @throws Exception
      *
      * @return mixed
@@ -162,8 +160,6 @@ class Generic
     /**
      * Identical to Execute but display a preview of what will happen.
      *
-     * @param mixed ...$args
-     *
      * @throws Exception
      *
      * @return mixed
@@ -184,18 +180,16 @@ class Generic
 
     /**
      * Get description of this current action in a user-understandable language.
-     *
-     * @return string
      */
-    public function getDescription()
+    public function getDescription(): string
     {
-        return $this->description ?? ('Will execute '.$this->caption);
+        return $this->description ?? 'Will execute '.$this->caption;
     }
 
     /**
      * Return confirmation message for action.
      *
-     * @return string
+     * @return string|false
      */
     public function getConfirmation()
     {
@@ -213,11 +207,9 @@ class Generic
     }
 
     /**
-     * Return model associate with this action.
-     *
-     * @return Model
+     * Return model associated with this action.
      */
-    public function getModel()
+    public function getModel(): Model
     {
         return $this->owner;
     }

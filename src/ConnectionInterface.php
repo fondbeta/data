@@ -12,5 +12,5 @@ interface ConnectionInterface
      *
      * @param string $model_name Name of the model
      */
-    public function add($model_name);
+    public function add(string $model_name);
 }

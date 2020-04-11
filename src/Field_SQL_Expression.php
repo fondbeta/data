@@ -84,12 +84,8 @@ class Field_SQL_Expression extends Field_SQL
 
     /**
      * When field is used as expression, this method will be called.
-     *
-     * @param \atk4\dsql\Expression $expression
-     *
-     * @return \atk4\dsql\Expression
      */
-    public function getDSQLExpression($expression)
+    public function getDSQLExpression(Expression $expression): Expression
     {
         $expr = $this->expr;
         if (is_callable($expr)) {

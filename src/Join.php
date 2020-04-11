@@ -132,8 +132,6 @@ class Join
 
     /**
      * Default constructor. Will copy argument into properties.
-     *
-     * @param array $defaults
      */
     public function __construct($foreign_table = null)
     {
@@ -144,8 +142,6 @@ class Join
 
     /**
      * Will use either foreign_alias or create #join_<table>.
-     *
-     * @return string
      */
     public function getDesiredName(): string
     {
@@ -212,18 +208,10 @@ class Join
      * with this join. That means it won't be loaded from $table, but
      * form the join instead.
      *
-     * @param string $name
-     * @param array  $seed
-     *
      * @throws \atk4\core\Exception
-     *
-     * @return Field
      */
-    public function addField($name, $seed = [])
+    public function addField(string $name, array $seed = []): Field
     {
-        if ($seed && !is_array($seed)) {
-            $seed = [$seed];
-        }
         $seed['join'] = $this;
 
         return $this->owner->addField($this->prefix.$name, $seed);
@@ -231,12 +219,8 @@ class Join
 
     /**
      * Adds multiple fields.
-     *
-     * @param array $fields
-     *
-     * @return $this
      */
-    public function addFields($fields = [])
+    public function addFields(array $fields = []): self
     {
         foreach ($fields as $field) {
             if (is_array($field)) {
@@ -272,17 +256,9 @@ class Join
 
     /**
      * Another join will be attached to a current join.
-     *
-     * @param string $foreign_table
-     * @param array  $defaults
-     *
-     * @return Join
      */
-    public function join($foreign_table, $defaults = [])
+    public function join(string $foreign_table, array $defaults = []): self
     {
-        if (!is_array($defaults)) {
-            $defaults = ['master_field' => $defaults];
-        }
         $defaults['join'] = $this;
 
         return $this->owner->join($foreign_table, $defaults);
@@ -290,33 +266,21 @@ class Join
 
     /**
      * Another leftJoin will be attached to a current join.
-     *
-     * @param string $foreign_table
-     * @param array  $defaults
-     *
-     * @return Join
      */
-    public function leftJoin($foreign_table, $defaults = [])
+    public function leftJoin(string $foreign_table, array $defaults = []): self
     {
-        if (!is_array($defaults)) {
-            $defaults = ['master_field' => $defaults];
-        }
         $defaults['join'] = $this;
 
         return $this->owner->leftJoin($foreign_table, $defaults);
     }
 
+    /*
     /**
      * weakJoin will be attached to a current join.
      *
      * @todo NOT IMPLEMENTED! weakJoin method does not exist!
-     *
-     * @param array $defaults
-     *
-     * @return
-     */
-    /*
-    public function weakJoin($defaults = [])
+     *-/
+    public function weakJoin(array $defaults = []): Join
     {
         $defaults['join'] = $this;
 
@@ -326,18 +290,9 @@ class Join
 
     /**
      * Creates reference based on a field from the join.
-     *
-     * @param string $link
-     * @param array  $defaults
-     *
-     * @return Reference\HasOne
      */
-    public function hasOne($link, $defaults = [])
+    public function hasOne(string $link, array $defaults = []): Reference\HasOne
     {
-        if (!is_array($defaults)) {
-            $defaults = ['model' => $defaults ?: 'Model_'.$link];
-        }
-
         $defaults['join'] = $this;
 
         return $this->owner->hasOne($link, $defaults);
@@ -345,18 +300,9 @@ class Join
 
     /**
      * Creates reference based on the field from the join.
-     *
-     * @param string $link
-     * @param array  $defaults
-     *
-     * @return Reference\HasMany
      */
-    public function hasMany($link, $defaults = [])
+    public function hasMany(string $link, array $defaults = []): Reference\HasMany
     {
-        if (!is_array($defaults)) {
-            $defaults = ['model' => $defaults ?: 'Model_'.$link];
-        }
-
         $defaults = array_merge([
             'our_field'   => $this->id_field,
             'their_field' => $this->owner->table.'_'.$this->id_field,
@@ -365,19 +311,16 @@ class Join
         return $this->owner->hasMany($link, $defaults);
     }
 
+    /*
     /**
      * Wrapper for containsOne that will associate field
      * with join.
      *
      * @todo NOT IMPLEMENTED !
      *
-     * @param Model $model
-     * @param array $defaults
-     *
      * @return ???
-     */
-    /*
-    public function containsOne($model, $defaults = [])
+     *-/
+    public function containsOne(Model $model, array $defaults = [])
     {
         if (!is_array($defaults)) {
             $defaults = [$defaults];
@@ -397,13 +340,10 @@ class Join
      *
      * @todo NOT IMPLEMENTED !
      *
-     * @param Model $model
-     * @param array $defaults
-     *
      * @return ???
      */
     /*
-    public function containsMany($model, $defaults = [])
+    public function containsMany(Model $model, array $defaults = [])
     {
         if (!is_array($defaults)) {
             $defaults = [$defaults];
@@ -417,6 +357,7 @@ class Join
     }
     */
 
+    /*
     /**
      * Will iterate through this model by pulling
      *  - fields
@@ -429,27 +370,24 @@ class Join
      *
      * @todo NOT IMPLEMENTED !
      *
-     * @param Model $model
-     * @param array $defaults
-     */
-    /*
-    public function importModel($model, $defaults = [])
+     * @return ???
+     *-/
+    public function importModel(Model $model, array $defaults = [])
     {
         // not implemented yet !!!
     }
     */
 
+    /*
     /**
      * Joins with the primary table of the model and
      * then import all of the data into our model.
      *
      * @todo NOT IMPLEMENTED!
      *
-     * @param Model $model
-     * @param array $fields
-     */
-    /*
-    public function weakJoinModel($model, $fields = [])
+     * @return ???
+     *-/
+    public function weakJoinModel(Model $model, array $fields = [])
     {
         if (!is_object($model)) {
             $model = $this->owner->connection->add($model);
@@ -465,12 +403,9 @@ class Join
     /**
      * Set value.
      *
-     * @param string $field
-     * @param mixed  $value
-     *
      * @return $this
      */
-    public function set($field, $value)
+    public function set(string $field, $value): self
     {
         $this->save_buffer[$field] = $value;
 

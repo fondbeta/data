@@ -47,11 +47,9 @@ class HasMany extends Reference
     /**
      * Returns referenced model with condition set.
      *
-     * @param array $defaults Properties
-     *
      * @throws Exception
      */
-    public function ref($defaults = []): Model
+    public function ref(array $defaults = []): Model
     {
         return $this->getModel($defaults)
             ->addCondition(
@@ -63,11 +61,9 @@ class HasMany extends Reference
     /**
      * Creates model that can be used for generating sub-query actions.
      *
-     * @param array $defaults Properties
-     *
      * @throws Exception
      */
-    public function refLink($defaults = []): Model
+    public function refLink(array $defaults = []): Model
     {
         return $this->getModel($defaults)
             ->addCondition(
@@ -80,12 +76,11 @@ class HasMany extends Reference
      * Adds field as expression to owner model.
      * Used in aggregate strategy.
      *
-     * @param string $n        Field name
-     * @param array  $defaults Properties
+     * @param string $n Field name
      *
      * @throws Exception
      */
-    public function addField($n, $defaults = []): Field
+    public function addField(string $n, array $defaults = []): Field
     {
         if (!isset($defaults['aggregate']) && !isset($defaults['concat']) && !isset($defaults['expr'])) {
             throw new Exception([
@@ -144,13 +139,11 @@ class HasMany extends Reference
      *
      * @see addField()
      *
-     * @param array $fields Array of fields
-     *
      * @throws Exception
      *
      * @return $this
      */
-    public function addFields($fields = [])
+    public function addFields(array $fields = []): self
     {
         foreach ($fields as $field) {
             $name = $field[0];

@@ -93,7 +93,7 @@ class SQL extends Persistence
     /**
      * Disconnect from database explicitly.
      */
-    public function disconnect()
+    public function disconnect(): void
     {
         parent::disconnect();
 
@@ -102,8 +102,6 @@ class SQL extends Persistence
 
     /**
      * Returns Query instance.
-     *
-     * @return Query
      */
     public function dsql(): Query
     {
@@ -115,24 +113,19 @@ class SQL extends Persistence
      * the code inside callback will fail, then all of the transaction
      * will be also rolled back.
      *
-     * @param callable $f
-     *
      * @return mixed
      */
-    public function atomic($f)
+    public function atomic(callable $fx, ...$args)
     {
-        return $this->connection->atomic($f);
+        return $this->connection->atomic($fx, ...$args);
     }
 
     /**
      * Associate model with the data driver.
      *
-     * @param Model|string $m        Model which will use this persistence
-     * @param array        $defaults Properties
-     *
-     * @return Model
+     * @param Model|string $m Model which will use this persistence
      */
-    public function add($m, $defaults = []): Model
+    public function add($m, array $defaults = []): Model
     {
         // Use our own classes for fields, references and expressions unless
         // $defaults specify them otherwise.
@@ -172,10 +165,8 @@ class SQL extends Persistence
 
     /**
      * Initialize persistence.
-     *
-     * @param Model $m
      */
-    protected function initPersistence(Model $m)
+    protected function initPersistence(Model $m): void
     {
         $m->addMethod('expr', [$this, 'expr']);
         $m->addMethod('dsql', [$this, 'dsql']);
@@ -185,13 +176,9 @@ class SQL extends Persistence
     /**
      * Creates new Expression object from expression string.
      *
-     * @param Model $m
      * @param mixed $expr
-     * @param array $args
-     *
-     * @return Expression
      */
-    public function expr(Model $m, $expr, $args = []): Expression
+    public function expr(Model $m, $expr, array $args = []): Expression
     {
         if (!is_string($expr)) {
             return $this->connection->expr($expr, $args);
@@ -214,23 +201,14 @@ class SQL extends Persistence
 
     /**
      * Creates new Query object with current_timestamp(precision) expression.
-     *
-     * @param Model $m
-     * @param int   $precision
-     *
-     * @return Query
      */
-    public function exprNow($precision = null)
+    public function exprNow(int $precision = null): Query
     {
         return $this->connection->dsql()->exprNow($precision);
     }
 
     /**
      * Initializes base query for model $m.
-     *
-     * @param Model $m
-     *
-     * @return Query
      */
     public function initQuery(Model $m): Query
     {
@@ -252,9 +230,6 @@ class SQL extends Persistence
 
     /**
      * Initializes WITH cursors.
-     *
-     * @param Model $m
-     * @param Query $q
      */
     public function initWithCursors(Model $m, Query $q)
     {
@@ -285,9 +260,6 @@ class SQL extends Persistence
 
     /**
      * Adds Field in Query.
-     *
-     * @param Query $q
-     * @param Field $field
      */
     public function initField(Query $q, Field $field)
     {
@@ -301,11 +273,9 @@ class SQL extends Persistence
     /**
      * Adds model fields in Query.
      *
-     * @param Model            $m
-     * @param Query            $q
      * @param array|null|false $fields
      */
-    public function initQueryFields(Model $m, $q, $fields = null)
+    public function initQueryFields(Model $m, Query $q, $fields = null)
     {
         // do nothing on purpose
         if ($fields === false) {
@@ -354,9 +324,6 @@ class SQL extends Persistence
 
     /**
      * Will set limit defined inside $m onto query $q.
-     *
-     * @param Model $m
-     * @param Query $q
      */
     protected function setLimitOrder(Model $m, Query $q)
     {
@@ -389,11 +356,6 @@ class SQL extends Persistence
 
     /**
      * Will apply conditions defined inside $m onto query $q.
-     *
-     * @param Model $m
-     * @param Query $q
-     *
-     * @return Query
      */
     public function initQueryConditions(Model $m, Query $q): Query
     {
@@ -454,7 +416,6 @@ class SQL extends Persistence
      * This is the actual field typecasting, which you can override in your
      * persistence to implement necessary typecasting.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -514,7 +475,6 @@ class SQL extends Persistence
      * This is the actual field typecasting, which you can override in your
      * persistence to implement necessary typecasting.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -614,14 +574,8 @@ class SQL extends Persistence
 
     /**
      * Executing $model->action('update') will call this method.
-     *
-     * @param Model  $m
-     * @param string $type
-     * @param array  $args
-     *
-     * @return Query
      */
-    public function action(Model $m, $type, $args = [])
+    public function action(Model $m, string $type, array $args = []): Query
     {
         if (!is_array($args)) {
             throw new Exception([
@@ -731,10 +685,9 @@ class SQL extends Persistence
     /**
      * Tries to load data record, but will not fail if record can't be loaded.
      *
-     * @param Model $m
      * @param mixed $id
      *
-     * @return array
+     * @return array|null
      */
     public function tryLoad(Model $m, $id)
     {
@@ -781,12 +734,9 @@ class SQL extends Persistence
     /**
      * Loads a record from model and returns a associative array.
      *
-     * @param Model $m
      * @param mixed $id
-     *
-     * @return array
      */
-    public function load(Model $m, $id)
+    public function load(Model $m, $id): array
     {
         $data = $this->tryLoad($m, $id);
 
@@ -805,9 +755,7 @@ class SQL extends Persistence
     /**
      * Tries to load any one record.
      *
-     * @param Model $m
-     *
-     * @return array
+     * @return array|null
      */
     public function tryLoadAny(Model $m)
     {
@@ -851,12 +799,8 @@ class SQL extends Persistence
 
     /**
      * Loads any one record.
-     *
-     * @param Model $m
-     *
-     * @return array
      */
-    public function loadAny(Model $m)
+    public function loadAny(Model $m): array
     {
         $data = $this->tryLoadAny($m);
 
@@ -874,12 +818,9 @@ class SQL extends Persistence
     /**
      * Inserts record in database and returns new record ID.
      *
-     * @param Model $m
-     * @param array $data
-     *
      * @return mixed
      */
-    public function insert(Model $m, $data)
+    public function insert(Model $m, array $data)
     {
         $insert = $m->action('insert');
 
@@ -913,13 +854,10 @@ class SQL extends Persistence
     /**
      * Export all DataSet.
      *
-     * @param Model      $m
      * @param array|null $fields
      * @param bool       $typecast_data Should we typecast exported data
-     *
-     * @return array
      */
-    public function export(Model $m, $fields = null, $typecast_data = true)
+    public function export(Model $m, $fields = null, bool $typecast_data = true): array
     {
         $data = $m->action('select', [$fields])->get();
 
@@ -934,12 +872,8 @@ class SQL extends Persistence
 
     /**
      * Prepare iterator.
-     *
-     * @param Model $m
-     *
-     * @return \PDOStatement
      */
-    public function prepareIterator(Model $m)
+    public function prepareIterator(Model $m): \PDOStatement
     {
         try {
             $export = $m->action('select');
@@ -959,11 +893,9 @@ class SQL extends Persistence
     /**
      * Updates record in database.
      *
-     * @param Model $m
      * @param mixed $id
-     * @param array $data
      */
-    public function update(Model $m, $id, $data)
+    public function update(Model $m, $id, array $data)
     {
         if (!$m->id_field) {
             throw new Exception(['id_field of a model is not set. Unable to update record.']);
@@ -1014,7 +946,6 @@ class SQL extends Persistence
     /**
      * Deletes record from database.
      *
-     * @param Model $m
      * @param mixed $id
      */
     public function delete(Model $m, $id)

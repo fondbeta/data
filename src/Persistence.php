@@ -30,10 +30,8 @@ class Persistence
      *
      * @throws Exception
      * @throws \atk4\dsql\Exception
-     *
-     * @return Persistence
      */
-    public static function connect($dsn, $user = null, $password = null, $args = [])
+    public static function connect($dsn, $user = null, $password = null, $args = []): self
     {
         // Process DSN string
         $dsn = \atk4\dsql\Connection::normalizeDSN($dsn, $user, $password);
@@ -70,22 +68,19 @@ class Persistence
     /**
      * Disconnect from database explicitly.
      */
-    public function disconnect()
+    public function disconnect(): void
     {
     }
 
     /**
      * Associate model with the data driver.
      *
-     * @param Model|string $m        Model which will use this persistence
-     * @param array        $defaults Properties
+     * @param Model|string $m Model which will use this persistence
      *
      * @throws Exception
      * @throws \atk4\core\Exception
-     *
-     * @return Model
      */
-    public function add($m, $defaults = [])
+    public function add($m, array $defaults = []): Model
     {
         /*
         if (isset($defaults[0])) {
@@ -120,8 +115,6 @@ class Persistence
      * Extend this method to enhance model to work with your persistence. Here
      * you can define additional methods or store additional data. This method
      * is executed before model's init().
-     *
-     * @param Model $m
      */
     protected function initPersistence(Model $m)
     {
@@ -132,13 +125,11 @@ class Persistence
      * persistences will support atomic operations, so by default we just
      * don't do anything.
      *
-     * @param callable $f
-     *
      * @return mixed
      */
-    public function atomic($f)
+    public function atomic(callable $fx, ...$arg)
     {
-        return call_user_func($f);
+        return call_user_func($fx, ...$arg);
     }
 
     /**
@@ -160,13 +151,8 @@ class Persistence
      *     'age'=>30,
      *     'is_married'=>1
      *   ]
-     *
-     * @param Model $m
-     * @param array $row
-     *
-     * @return array
      */
-    public function typecastSaveRow(Model $m, $row)
+    public function typecastSaveRow(Model $m, array $row): array
     {
         if (!$row) {
             return $row;
@@ -227,13 +213,8 @@ class Persistence
      * NOTE: Please DO NOT perform "actual" field mapping here, because data
      * may be "aliased" from SQL persistences or mapped depending on persistence
      * driver.
-     *
-     * @param Model $m
-     * @param array $row
-     *
-     * @return array
      */
-    public function typecastLoadRow(Model $m, $row)
+    public function typecastLoadRow(Model $m, array $row): array
     {
         if (!$row) {
             return $row;
@@ -279,7 +260,6 @@ class Persistence
      * Prepare value of a specific field by converting it to
      * persistence-friendly format.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -308,7 +288,6 @@ class Persistence
      * Cast specific field value from the way how it's stored inside
      * persistence to a PHP format.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -343,7 +322,6 @@ class Persistence
      * This is the actual field typecasting, which you can override in your
      * persistence to implement necessary typecasting.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -371,7 +349,6 @@ class Persistence
      * Provided with a value, will perform field serialization.
      * Can be used for the purposes of encryption or storing unsupported formats.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -395,7 +372,6 @@ class Persistence
      * Provided with a value, will perform field un-serialization.
      * Can be used for the purposes of encryption or storing unsupported formats.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -418,7 +394,6 @@ class Persistence
     /**
      * Override this to fine-tune serialization for your persistence.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -446,7 +421,6 @@ class Persistence
     /**
      * Override this to fine-tune un-serialization for your persistence.
      *
-     * @param Field $f
      * @param mixed $value
      *
      * @return mixed
@@ -466,13 +440,9 @@ class Persistence
     /**
      * JSON decoding with proper error treatment.
      *
-     * @param Field  $f
-     * @param string $value
-     * @param bool   $assoc
-     *
      * @return mixed
      */
-    public function jsonDecode(Field $f, $value, $assoc = true)
+    public function jsonDecode(Field $f, string $value, bool $assoc = true)
     {
         // constant supported only starting PHP 7.3
         if (!defined('JSON_THROW_ON_ERROR')) {
@@ -494,12 +464,9 @@ class Persistence
     /**
      * JSON encoding with proper error treatment.
      *
-     * @param Field $f
      * @param mixed $value
-     *
-     * @return string
      */
-    public function jsonEncode(Field $f, $value)
+    public function jsonEncode(Field $f, $value): string
     {
         // constant supported only starting PHP 7.3
         if (!defined('JSON_THROW_ON_ERROR')) {

@@ -2,7 +2,6 @@
 
 namespace atk4\data\Persistence;
 
-use atk4\data\Exception;
 use atk4\data\Model;
 
 /**
@@ -25,7 +24,7 @@ class Static_ extends Array_
     /**
      * Populate the following fields for the model.
      *
-     * @var array
+     * @var array[]
      */
     public $fieldsForModel = [];
 
@@ -34,12 +33,8 @@ class Static_ extends Array_
      *
      * @param array $data Static data in one of supported formats
      */
-    public function __construct($data = null)
+    public function __construct(array $data = null)
     {
-        if (!is_array($data)) {
-            throw new Exception(['Static data should be array of strings or array of hashes', 'data'=>$data]);
-        }
-
         // chomp off first row, we will use it to deduct fields
         $row1 = reset($data);
 

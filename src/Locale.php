@@ -11,10 +11,8 @@ class Locale
 
     /**
      * Get absolute Path of default translations.
-     *
-     * @return string
      */
-    public static function getPath()
+    public static function getPath(): string
     {
         return implode(DIRECTORY_SEPARATOR, [__DIR__, '..', 'locale']).DIRECTORY_SEPARATOR;
     }
