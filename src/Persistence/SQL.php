@@ -634,9 +634,15 @@ class SQL extends Persistence
 
             case 'count':
                 $this->initQueryConditions($m, $q);
-                $m->hook('initSelectQuery', [$q]);
+                $m->hook('initSelectQuery', [$q, $type]);
 
                 return $q->reset('field')->field('count(*)', $args['alias'] ?? null);
+                
+            case 'exists':
+                $this->initQueryConditions($m, $q);
+                $m->hook('initSelectQuery', [$q, $type]);
+
+                return $this->dsql()->mode('select')->option('exists')->field($q);
 
             case 'field':
                 if (!isset($args[0])) {
