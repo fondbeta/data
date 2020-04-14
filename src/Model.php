@@ -964,8 +964,10 @@ class Model implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Do field exist?
+     *
+     * @param string $name
      */
-    public function offsetExists(string $name): bool
+    public function offsetExists(/* string type can not be put here because of the PHP \ArrayAccess interface */$name): bool
     {
         return array_key_exists($this->normalizeFieldName($name), $this->dirty);
     }
@@ -973,9 +975,11 @@ class Model implements \ArrayAccess, \IteratorAggregate
     /**
      * Returns field value.
      *
+     * @param string $name
+     *
      * @return mixed
      */
-    public function offsetGet(string $name)
+    public function offsetGet(/* string type can not be put here because of the PHP \ArrayAccess interface */ $name)
     {
         return $this->get($name);
     }
@@ -983,17 +987,20 @@ class Model implements \ArrayAccess, \IteratorAggregate
     /**
      * Set field value.
      *
-     * @param mixed $val
+     * @param string $name
+     * @param mixed  $val
      */
-    public function offsetSet(string $name, $val): void
+    public function offsetSet(/* string type can not be put here because of the PHP \ArrayAccess interface */ $name, $val): void
     {
         $this->set($name, $val);
     }
 
     /**
      * Redo field value.
+     *
+     * @param string $name
      */
-    public function offsetUnset(string $name)
+    public function offsetUnset(/* string type can not be put here because of the PHP \ArrayAccess interface */ $name): void
     {
         $this->_unset($name);
     }
