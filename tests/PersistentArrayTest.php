@@ -490,7 +490,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][8], $result[8]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', '>', 18);
         $result = $m->action('select')->get();
@@ -498,7 +498,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][9], $result[9]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', '>=', 18);
         $result = $m->action('select')->get();
@@ -507,7 +507,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][9], $result[9]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', '<', 12);
         $result = $m->action('select')->get();
@@ -515,7 +515,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][1], $result[1]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', '<=', 12);
         $result = $m->action('select')->get();
@@ -524,7 +524,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][2], $result[2]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', [11, 12]);
         $result = $m->action('select')->get();
@@ -533,7 +533,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][2], $result[2]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', 'NOT IN', [11, 12, 13, 14, 15, 16, 17]);
         $result = $m->action('select')->get();
@@ -542,7 +542,7 @@ class PersistentArrayTest extends \atk4\core\PHPUnit_AgileTestCase
         $this->assertEquals($a['countries'][9], $result[9]);
         unset($result);
         $m->unload();
-        
+
         $m->scope()->clear();
         $m->addCondition('code', '!=', [11, 12, 13, 14, 15, 16, 17]);
         $result = $m->action('select')->get();
