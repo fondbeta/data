@@ -637,7 +637,7 @@ class SQL extends Persistence
                 $m->hook('initSelectQuery', [$q, $type]);
 
                 return $q->reset('field')->field('count(*)', $args['alias'] ?? null);
-                
+
             case 'exists':
                 $this->initQueryConditions($m, $q);
                 $m->hook('initSelectQuery', [$q, $type]);
