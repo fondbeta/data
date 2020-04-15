@@ -40,15 +40,13 @@
   },
   "require-dev": {
     "atk4/schema": "dev-develop",
-    "phpunit/phpunit": "<6",
-    "phpunit/dbunit": ">=1.2",
+    "phpunit/phpunit": "*",
     "phpunit/phpcov": "*",
     "codeclimate/php-test-reporter": "*"
   },
   "require-dev-release": {
     "atk4/schema": "^2.0",
-    "phpunit/phpunit": "<6",
-    "phpunit/dbunit": ">=1.2",
+    "phpunit/phpunit": "*",
     "phpunit/phpcov": "*",
     "codeclimate/php-test-reporter": "*"
   },
