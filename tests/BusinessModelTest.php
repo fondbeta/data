@@ -3,6 +3,7 @@
 namespace atk4\data\tests;
 
 use atk4\core\AtkPhpunit;
+use atk4\data\Exception;
 use atk4\data\Field;
 use atk4\data\Model;
 use atk4\data\Persistence;
@@ -46,12 +47,10 @@ class BusinessModelTest extends AtkPhpunit\TestCase
         $this->assertEquals(['name' => 5, 'surname' => 'Bilbo'], $m->get());
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testNoFieldException()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set(['name' => 5]);
     }
 
@@ -190,9 +189,6 @@ class BusinessModelTest extends AtkPhpunit\TestCase
     }
      */
 
-    /**
-     * @expectedException Exception
-     */
     public function testException1()
     {
         $m = new Model();
@@ -200,6 +196,7 @@ class BusinessModelTest extends AtkPhpunit\TestCase
         $m->addField('surname');
         $m->onlyFields(['surname']);
 
+        $this->expectException(Exception::class);
         $m['name'] = 5;
     }
 
@@ -233,66 +230,59 @@ class BusinessModelTest extends AtkPhpunit\TestCase
     }
 
     /**
-     * @expectedException Exception
-     *
-     * fields can't be numeric
+     * Fields can't be numeric.
      */
     public function testException2()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set(0, 'foo');
     }
 
     /**
-     * @expectedException Exception
-     *
-     * fields can't be numeric
+     * Fields can't be numeric.
      */
     public function testException2a()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set('3', 'foo');
     }
 
     /**
-     * @expectedException Exception
-     *
-     * fields can't be numeric
+     * Fields can't be numeric.
      */
     public function testException2b()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set('3b', 'foo');
     }
 
     /**
-     * @expectedException Exception
-     *
-     * fields can't be numeric
+     * Fields can't be numeric.
      */
     public function testException2c()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set('', 'foo');
     }
 
     /**
-     * @expectedException Exception
-     *
-     * fields can't be numeric
+     * Fields can't be numeric.
      */
     public function testException2d()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set(['foo', 'bar']);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testException3()
     {
         $m = new Model();
+        $this->expectException(Exception::class);
         $m->set(4, 5);
     }
 

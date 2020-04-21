@@ -41,9 +41,6 @@ class JoinSQLTest extends \atk4\schema\PhpunitTestCase
         $this->assertEquals('foo_id', $this->getProtected($j, 'foreign_field'));
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testDirection2()
     {
         $db = new Persistence\SQL($this->db->connection);

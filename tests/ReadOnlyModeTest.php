@@ -2,6 +2,7 @@
 
 namespace atk4\data\tests;
 
+use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\data\Persistence;
 
@@ -59,34 +60,31 @@ class ReadOnlyModeTest extends \atk4\schema\PhpunitTestCase
 
     /**
      * Model cannot be saved.
-     *
-     * @expectedException Exception
      */
     public function testLoadSave()
     {
         $this->m->load(1);
         $this->m['name'] = 'X';
+        $this->expectException(Exception::class);
         $this->m->save();
     }
 
     /**
      * Insert should fail too.
-     *
-     * @expectedException Exception
      */
     public function testInsert()
     {
+        $this->expectException(Exception::class);
         $this->m->insert(['name'=>'Joe']);
     }
 
     /**
      * Different attempt that should also fail.
-     *
-     * @expectedException Exception
      */
     public function testSave1()
     {
         $this->m->tryLoadAny();
+        $this->expectException(Exception::class);
         $this->m->saveAndUnload();
     }
 
@@ -106,11 +104,9 @@ class ReadOnlyModeTest extends \atk4\schema\PhpunitTestCase
         $this->assertEquals('Sue', $this->m['name']);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testFailDelete1()
     {
+        $this->expectException(Exception::class);
         $this->m->delete(1);
     }
 }

@@ -3,6 +3,7 @@
 namespace atk4\data\tests;
 
 use atk4\core\AtkPhpunit;
+use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\data\Persistence;
 use atk4\data\tests\Model\Female as Female;
@@ -230,34 +231,31 @@ class PersistentArrayTest extends AtkPhpunit\TestCase
 
     /**
      * Some persistences don't support tryLoad() method.
-     *
-     * @expectedException Exception
      */
     public function testTryLoadNotSupportedException()
     {
         $m = new Model(new Persistence());
+        $this->expectException(Exception::class);
         $m->tryLoad(1);
     }
 
     /**
      * Some persistences don't support loadAny() method.
-     *
-     * @expectedException Exception
      */
     public function testLoadAnyNotSupportedException()
     {
         $m = new Model(new Persistence());
+        $this->expectException(Exception::class);
         $m->loadAny();
     }
 
     /**
      * Some persistences don't support tryLoadAny() method.
-     *
-     * @expectedException Exception
      */
     public function testTryLoadAnyNotSupportedException()
     {
         $m = new Model(new Persistence());
+        $this->expectException(Exception::class);
         $m->tryLoadAny();
     }
 
@@ -588,33 +586,26 @@ class PersistentArrayTest extends AtkPhpunit\TestCase
         $this->assertEquals(0, $m->action('count')->getOne());
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testUnsupportedAction()
     {
         $a = [1=>['name'=>'John']];
         $p = new Persistence\Array_($a);
         $m = new Model($p);
         $m->addField('name');
+        $this->expectException(Exception::class);
         $m->action('foo');
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testBadActionArgs()
     {
         $a = [1=>['name'=>'John']];
         $p = new Persistence\Array_($a);
         $m = new Model($p);
         $m->addField('name');
+        $this->expectException(Exception::class);
         $m->action('select', 'foo'); // args should be array
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testUnsupportedCondition1()
     {
         $a = [1=>['name'=>'John']];
@@ -622,14 +613,10 @@ class PersistentArrayTest extends AtkPhpunit\TestCase
         $m = new Model($p);
         $m->addField('name');
         $m->addCondition('name');
+        $this->expectException(Exception::class);
         $m->export();
     }
 
-    /**
-     * unsupported method.
-     *
-     * @expectedException Exception
-     */
     public function testUnsupportedCondition2()
     {
         $a = [1=>['name'=>'John']];
@@ -637,13 +624,12 @@ class PersistentArrayTest extends AtkPhpunit\TestCase
         $m = new Model($p);
         $m->addField('name');
         $m->addCondition('name', '<>', 'John');
+        $this->expectException(Exception::class);
         $m->export();
     }
 
     /**
      * unsupported format - 4th param.
-     *
-     * @expectedException Exception
      */
     public function testUnsupportedCondition3()
     {
@@ -652,13 +638,12 @@ class PersistentArrayTest extends AtkPhpunit\TestCase
         $m = new Model($p);
         $m->addField('name');
         $m->addCondition('name', 'like', '%o%', 'CASE_INSENSITIVE');
+        $this->expectException(Exception::class);
         $m->export();
     }
 
     /**
      * unsupported format - param[0] not Field::class.
-     *
-     * @expectedException Exception
      */
     public function testUnsupportedCondition5()
     {
@@ -667,6 +652,7 @@ class PersistentArrayTest extends AtkPhpunit\TestCase
         $m = new Model($p);
         $m->addField('name');
         $m->addCondition(new Model(), 'like', '%o%');
+        $this->expectException(Exception::class);
         $m->export();
     }
 

@@ -2,6 +2,7 @@
 
 namespace atk4\data\tests;
 
+use atk4\data\Exception;
 use atk4\data\Model;
 use atk4\data\Persistence;
 
@@ -50,11 +51,9 @@ class ModelWithoutIDTest extends \atk4\schema\PhpunitTestCase
         $this->assertEquals(['Sue', 'John'], $n);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testFail1()
     {
+        $this->expectException(Exception::class);
         $this->m->load(1);
     }
 
@@ -117,34 +116,30 @@ class ModelWithoutIDTest extends \atk4\schema\PhpunitTestCase
         $this->assertEquals('Sue', $this->m['name']);
     }
 
-    /**
-     * @expectedException Exception
-     */
     public function testFailDelete1()
     {
+        $this->expectException(Exception::class);
         $this->m->delete(4);
     }
 
     /**
      * Additional checks are done if ID is manually set.
-     *
-     * @expectedException Exception
      */
     public function testFailDelete2()
     {
         $this->m->id = 4;
+        $this->expectException(Exception::class);
         $this->m->delete();
     }
 
     /**
      * Additional checks are done if ID is manually set.
-     *
-     * @expectedException Exception
      */
     public function testFailUpdate()
     {
         $this->m->id = 1;
         $this->m['name'] = 'foo';
+        $this->expectException(Exception::class);
         $this->m->saveAndUnload();
     }
 }
