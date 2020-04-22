@@ -754,33 +754,19 @@ class Model implements \ArrayAccess, \IteratorAggregate
     /**
      * Set field value.
      *
-     * @param string|array|Model $field
-     * @param mixed              $value
+     * @param string|array $field
+     * @param mixed        $value
      *
      * @return $this
      */
     public function set($field, $value = null)
     {
-        if (func_num_args() == 1) {
-            if (is_array($field)) {
-                foreach ($field as $key => $value) {
-                    if ($key === '0' || $key === 0) {
-                        $this->set($value);
-                    } else {
-                        $this->set($key, $value);
-                    }
-                }
-
-                return $this;
-            } elseif ($field instanceof self) {
-                $this->data = $field->data;
-                //$this->id = $field->id;
-
-                return $this;
-            } else {
-                $value = $field;
-                $field = $this->title_field;
+        if (func_num_args() === 1) {
+            foreach ($field as $key => $value) {
+                $this->set($key, $value);
             }
+
+            return $this;
         }
 
         $field = $this->normalizeFieldName($field);
@@ -1565,7 +1551,7 @@ class Model implements \ArrayAccess, \IteratorAggregate
      * If you wish to fully copy the data from one
      * model to another you should use:
      *
-     * $m->withPersistence($p2, false)->set($m)->save();
+     * $m->withPersistence($p2, false)->set($m->get())->save();
      *
      * See https://github.com/atk4/data/issues/111 for
      * use-case examples.
