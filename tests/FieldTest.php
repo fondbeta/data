@@ -844,7 +844,6 @@ class FieldTest extends \atk4\schema\PhpunitTestCase
         $this->assertEquals(['editable', 'editable_system', 'visible'], array_keys($model->getFields('editable')));
         $this->assertEquals(['editable', 'visible', 'visible_system', 'not_editable'], array_keys($model->getFields('visible')));
         $this->assertEquals(['editable', 'editable_system', 'visible', 'visible_system', 'not_editable'], array_keys($model->getFields(['editable', 'visible'])));
-        $this->assertEquals(['editable', 'editable_system', 'visible', 'visible_system', 'not_editable'], array_keys($model->getFields('visible,editable')));
 
         $model->onlyFields(['system', 'visible', 'not_editable']);
 

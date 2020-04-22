@@ -22,32 +22,22 @@ class ValidationException extends Exception
     {
         $this->errors = $errors;
 
-        $c = is_array($errors) ? count($errors) : 0;
-        if ($c > 1) {
+        if (count($errors) > 1) {
             return parent::__construct([
                 'Multiple unhandled validation errors',
                 'errors' => $errors,
                 'intent' => $intent,
                 'model'  => $model,
             ]);
-        }
+        } else {
+            $error = reset($errors);
+            $field = key($errors);
 
-        if ($c === 1) {
-            // foreach here just to get key/value from a single member
-            foreach ($errors as $field=>$error) {
-                return parent::__construct([
-                    $error,
-                    'field' => $field,
-                    'model' => $model,
-                ]);
-            }
+            return parent::__construct([
+                $error,
+                'field' => $field,
+                'model' => $model,
+            ]);
         }
-
-        return parent::__construct([
-            'Incorrect use of ValidationException, argument should be an array',
-            'errors' => $errors,
-            'intent' => $intent,
-            'model'  => $model,
-        ]);
     }
 }

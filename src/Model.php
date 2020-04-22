@@ -453,9 +453,9 @@ class Model implements \ArrayAccess, \IteratorAggregate
      *
      * @throws \atk4\core\Exception
      *
-     * @return array ['field'=> err_spec]
+     * @return array [field => err_spec]
      */
-    public function validate($intent = null)
+    public function validate($intent = null): array
     {
         $errors = [];
         foreach ($this->hook('validate', [$intent]) as $handler_error) {
@@ -714,15 +714,14 @@ class Model implements \ArrayAccess, \IteratorAggregate
 
     /**
      * @param string|array|null $filter
-     *
-     * @return array
      */
-    public function getFields($filter = null)
+    public function getFields($filter = null): array
     {
-        if (!$filter) {
+        if ($filter === null) {
             return $this->fields;
+        } elseif (is_string($filter)) {
+            $filter = [$filter];
         }
-        $filter = is_string($filter) ? explode(',', $filter) : $filter;
 
         return array_filter($this->fields, function (Field $field, $name) use ($filter) {
 
@@ -927,10 +926,8 @@ class Model implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Returns array of model record titles [id => title].
-     *
-     * @return array
      */
-    public function getTitles()
+    public function getTitles(): array
     {
         $field = $this->title_field && $this->hasField($this->title_field) ? $this->title_field : $this->id_field;
 
@@ -1065,8 +1062,6 @@ class Model implements \ArrayAccess, \IteratorAggregate
      * @param int $scope e.g. UserAction::ALL_RECORDS
      *
      * @throws \atk4\core\Exception
-     *
-     * @return array
      */
     public function getActions($scope = null): array
     {
@@ -1268,11 +1263,6 @@ class Model implements \ArrayAccess, \IteratorAggregate
      */
     public function setOrder($field, string $direction = 'asc')
     {
-        // fields passed as CSV string
-        if (is_string($field) && strpos($field, ',') !== false) {
-            $field = explode(',', $field);
-        }
-
         // fields passed as array
         if (is_array($field)) {
             if (func_num_args() > 1) {
@@ -1989,10 +1979,8 @@ class Model implements \ArrayAccess, \IteratorAggregate
      * @param array|null $fields        Names of fields to export
      * @param string     $key_field     Optional name of field which value we will use as array key
      * @param bool       $typecast_data Should we typecast exported data
-     *
-     * @return array
      */
-    public function export($fields = null, $key_field = null, $typecast_data = true)
+    public function export($fields = null, $key_field = null, $typecast_data = true): array
     {
         if (!$this->persistence->hasMethod('export')) {
             throw new Exception('Persistence does not support export()');
@@ -2477,8 +2465,6 @@ class Model implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Returns all reference fields.
-     *
-     * @return array
      */
     public function getRefs(): array
     {

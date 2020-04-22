@@ -16,7 +16,7 @@ class MyValidationModel extends Model
         $this->addField('domain');
     }
 
-    public function validate($intent = null)
+    public function validate($intent = null): array
     {
         $errors = [];
         if ($this['name'] === 'Python') {
@@ -39,7 +39,7 @@ class BadValidationModel extends Model
         $this->addField('name');
     }
 
-    public function validate($intent = null)
+    public function validate($intent = null): array
     {
         return 'This should be array';
     }
@@ -101,8 +101,7 @@ class ValidationTests extends AtkPhpunit\TestCase
     }
 
     /**
-     * @expectedException        \Exception
-     * @expectedExceptionMessage Incorrect use of ValidationException, argument should be an array
+     * @expectedException \TypeError
      */
     public function testValidate5()
     {
