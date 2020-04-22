@@ -2010,11 +2010,9 @@ class Model implements \ArrayAccess, \IteratorAggregate
      *
      * Will be further optimized in the future.
      *
-     * @param array|Model $row
-     *
      * @return $this
      */
-    public function import($rows)
+    public function import(array $rows)
     {
         $m = clone $this;
         foreach ($rows as $row) {
