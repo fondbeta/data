@@ -247,12 +247,8 @@ class Model implements \ArrayAccess, \IteratorAggregate
     public $id_field = 'id';
 
     /**
-     * Title field has a special meaning in various situations and framework
-     * provides various shortcuts for this field. Although it's not important
-     * to set this property to an existing fields, it would enable several
-     * shortcuts for you such as::.
-     *
-     *    $model->import(['Bananas','Oranges']); // 2 records imported
+     * Title field is used typically by UI components for a simple human
+     * readable row title/description.
      *
      * @var string
      */
@@ -1917,17 +1913,12 @@ class Model implements \ArrayAccess, \IteratorAggregate
      * This is a temporary method to avoid code duplication, but insert / import should
      * be implemented differently.
      *
-     * @param Model        $m   Model where to insert
-     * @param array|string $row Data row to insert or title field value
+     * @param Model $m Model where to insert
      */
-    protected function _rawInsert($m, $row)
+    protected function _rawInsert($m, array $row)
     {
         $m->reload_after_save = false;
         $m->unload();
-
-        if (!is_array($row)) {
-            $row = [$m->title_field => $row];
-        }
 
         // Find any row values that do not correspond to fields, and they may correspond to
         // references instead
