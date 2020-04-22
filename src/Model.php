@@ -1799,7 +1799,7 @@ class Model implements \ArrayAccess, \IteratorAggregate
      */
     public $_dirty_after_reload = [];
 
-    public function save($data = [], Persistence $to_persistence = null)
+    public function save(array $data = [], Persistence $to_persistence = null)
     {
         if (!$to_persistence) {
             $to_persistence = $this->persistence;
