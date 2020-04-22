@@ -250,7 +250,7 @@ class LookupSQLTest extends \atk4\schema\PhpunitTestCase
         $c->insert(['name'=>'Canada', 'Users'=>['Alain', ['Duncan', 'is_vip'=>true]]]);
 
         // Both lines will work quite similar
-        $c->insert(['Latvia', 'user_names'=>'imants,juris']);
+        $c->insert(['name'=>'Latvia', 'Users'=>[['name' => 'imants'], ['name' => 'juris']]]);
 
         //$this->varexport($this->getDB(['country','user']));
         $this->assertEquals([
