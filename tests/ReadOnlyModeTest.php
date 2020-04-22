@@ -38,7 +38,7 @@ class ReadOnlyModeTest extends \atk4\schema\PhpunitTestCase
         $this->m->tryLoadAny();
         $this->assertEquals('John', $this->m['name']);
 
-        $this->m->setOrder('name desc');
+        $this->m->setOrder('name', 'desc');
         $this->m->tryLoadAny();
         $this->assertEquals('Sue', $this->m['name']);
 

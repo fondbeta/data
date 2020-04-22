@@ -315,11 +315,8 @@ class Array_ extends Persistence
 
     /**
      * Will set limit defined inside $m onto data.
-     *
-     * @param Model         $m
-     * @param ArrayIterator $action
      */
-    protected function setLimitOrder($m, &$action)
+    protected function setLimitOrder(Model $m, \atk4\data\Action\Iterator &$action)
     {
         // first order by
         if ($m->order) {
