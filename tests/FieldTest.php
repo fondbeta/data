@@ -398,7 +398,7 @@ class FieldTest extends \atk4\schema\PhpunitTestCase
         $this->assertEquals('John', $m['name']);
         $this->assertEquals('Programmer', $m['category']);
 
-        $m->insert(['Peter', 'category' => 'Sales']);
+        $m->insert(['name' => 'Peter', 'category' => 'Sales']);
 
         $a = [
             'user' => [

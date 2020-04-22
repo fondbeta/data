@@ -1462,11 +1462,9 @@ class Model implements \ArrayAccess, \IteratorAggregate
      * Use this instead of save() if you want to squeeze a
      * little more performance out.
      *
-     * @param array $data
-     *
      * @return $this
      */
-    public function saveAndUnload($data = [])
+    public function saveAndUnload(array $data = [])
     {
         $ras = $this->reload_after_save;
         $this->reload_after_save = false;
@@ -1789,8 +1787,6 @@ class Model implements \ArrayAccess, \IteratorAggregate
     /**
      * Save record.
      *
-     * @param array $data
-     *
      * @return $this
      */
     public $_dirty_after_reload = [];
@@ -1958,11 +1954,9 @@ class Model implements \ArrayAccess, \IteratorAggregate
      *
      * Will be further optimized in the future.
      *
-     * @param array|Model $row
-     *
      * @return mixed
      */
-    public function insert($row)
+    public function insert(array $row)
     {
         $m = clone $this;
         $this->_rawInsert($m, $row);
