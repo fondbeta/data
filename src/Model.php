@@ -1980,7 +1980,7 @@ class Model implements \ArrayAccess, \IteratorAggregate
      * @param string     $key_field     Optional name of field which value we will use as array key
      * @param bool       $typecast_data Should we typecast exported data
      */
-    public function export($fields = null, $key_field = null, $typecast_data = true): array
+    public function export(array $fields = null, $key_field = null, $typecast_data = true): array
     {
         if (!$this->persistence->hasMethod('export')) {
             throw new Exception('Persistence does not support export()');
@@ -1996,7 +1996,7 @@ class Model implements \ArrayAccess, \IteratorAggregate
         $key_field_added = false;
 
         // prepare array with field names
-        if (!is_array($fields)) {
+        if ($fields === null) {
             $fields = [];
 
             if ($this->only_fields) {
@@ -2043,16 +2043,16 @@ class Model implements \ArrayAccess, \IteratorAggregate
         $data = $this->persistence->export($this, $fields, $typecast_data);
 
         // prepare resulting array
-        $return = [];
+        $res = [];
         foreach ($data as $row) {
             $key = $row[$key_field];
             if ($key_field_added) {
                 unset($row[$key_field]);
             }
-            $return[$key] = $row;
+            $res[$key] = $row;
         }
 
-        return $return;
+        return $res;
     }
 
     /**
@@ -2062,7 +2062,7 @@ class Model implements \ArrayAccess, \IteratorAggregate
      *
      * @return mixed
      */
-    public function getIterator()
+    public function getIterator(): iterable
     {
         foreach ($this->rawIterator() as $data) {
             $this->data = $this->persistence->typecastLoadRow($this, $data);
@@ -2105,10 +2105,8 @@ class Model implements \ArrayAccess, \IteratorAggregate
 
     /**
      * Returns iterator.
-     *
-     * @return Iterator
      */
-    public function rawIterator()
+    public function rawIterator(): iterable
     {
         return $this->persistence->prepareIterator($this);
     }

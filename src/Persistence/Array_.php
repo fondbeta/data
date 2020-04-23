@@ -81,10 +81,8 @@ class Array_ extends Persistence
      * @param Model  $m
      * @param mixed  $id
      * @param string $table
-     *
-     * @return array|false
      */
-    public function load(Model $m, $id, $table = null)
+    public function load(Model $m, $id, $table = null): array
     {
         if (isset($m->table) && !isset($this->data[$m->table])) {
             throw new Exception([
@@ -110,17 +108,15 @@ class Array_ extends Persistence
      * @param Model  $m
      * @param mixed  $id
      * @param string $table
-     *
-     * @return array|false
      */
-    public function tryLoad(Model $m, $id, $table = null)
+    public function tryLoad(Model $m, $id, $table = null): ?array
     {
         if (!isset($table)) {
             $table = $m->table;
         }
 
         if (!isset($this->data[$table][$id])) {
-            return false; // no record with such id in table
+            return null;
         }
 
         return $this->typecastLoadRow($m, $this->data[$table][$id]);
@@ -132,17 +128,15 @@ class Array_ extends Persistence
      *
      * @param Model $m
      * @param mixed $table
-     *
-     * @return array|false
      */
-    public function tryLoadAny(Model $m, $table = null)
+    public function tryLoadAny(Model $m, $table = null): ?array
     {
         if (!isset($table)) {
             $table = $m->table;
         }
 
         if (!$this->data[$table]) {
-            return false; // no records at all in table
+            return null;
         }
 
         reset($this->data[$table]);
@@ -260,12 +254,8 @@ class Array_ extends Persistence
 
     /**
      * Prepare iterator.
-     *
-     * @param Model $m
-     *
-     * @return array
      */
-    public function prepareIterator(Model $m)
+    public function prepareIterator(Model $m): iterable
     {
         return $m->action('select')->get();
     }
@@ -273,13 +263,10 @@ class Array_ extends Persistence
     /**
      * Export all DataSet.
      *
-     * @param Model      $m
-     * @param array|null $fields
-     * @param bool       $typecast_data Should we typecast exported data
-     *
-     * @return array
+     * @param Model $m
+     * @param bool  $typecast_data Should we typecast exported data
      */
-    public function export(Model $m, $fields = null, $typecast_data = true)
+    public function export(Model $m, array $fields = null, $typecast_data = true): array
     {
         $data = $m->action('select', [$fields])->get();
 

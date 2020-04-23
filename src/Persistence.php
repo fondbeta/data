@@ -162,16 +162,9 @@ class Persistence
      *   ]
      *
      * @param Model $m
-     * @param array $row
-     *
-     * @return array
      */
-    public function typecastSaveRow(Model $m, $row)
+    public function typecastSaveRow(Model $m, array $row): array
     {
-        if (!$row) {
-            return $row;
-        }
-
         $result = [];
         foreach ($row as $key => $value) {
 
@@ -229,16 +222,9 @@ class Persistence
      * driver.
      *
      * @param Model $m
-     * @param array $row
-     *
-     * @return array
      */
-    public function typecastLoadRow(Model $m, $row)
+    public function typecastLoadRow(Model $m, array $row): array
     {
-        if (!$row) {
-            return $row;
-        }
-
         $result = [];
         foreach ($row as $key => &$value) {
 
